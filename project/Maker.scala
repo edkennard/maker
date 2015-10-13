@@ -13,7 +13,7 @@ object Maker extends Build {
       organization := "com.github.cage433",
       version := "0.15",
       scalaVersion := "2.11.7",
-      scalacOptions := Seq("-unchecked", "-feature", "-deprecation",
+      scalacOptions := Seq("-unchecked", "-feature", "-deprecation:false",
                            "-Xfatal-warnings", "-language:implicitConversions"),
 
       scalaSource in Compile := baseDirectory.value / "src",

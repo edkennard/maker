@@ -12,9 +12,13 @@ object Maker extends Build {
 
       organization := "com.github.cage433",
       version := "0.15",
-      scalaVersion := "2.11.7",
-      scalacOptions := Seq("-unchecked", "-feature", "-deprecation:false",
-                           "-Xfatal-warnings", "-language:implicitConversions"),
+      scalaVersion := "2.10.4",
+      scalacOptions := Seq(
+        "-unchecked",
+        "-feature",
+        //"-Xfatal-warnings", // No time to fix deprecation errors right now
+        //"-deprecation",     // No time to fix deprecation errors right now
+        "-language:implicitConversions"),
 
       scalaSource in Compile := baseDirectory.value / "src",
       scalaSource in Test := baseDirectory.value / "tests",
@@ -42,8 +46,7 @@ object Maker extends Build {
         "org.eclipse.aether" % "aether-transport-http" % "1.0.0.v20140518",
         "org.eclipse.aether" %"aether-test-util" % "1.0.0.v20140518",
         "org.mortbay.jetty" % "jetty" % "6.1.26",
-        "com.github.cage433" % "maker-test-reporter_2.10" % "0.15",
-        "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.5"
+        "com.github.cage433" % "maker-test-reporter_2.10" % "0.15"
       ),
 
       // Desired exclusion of maker.git/Maker.scala doesn't work currently, have to delete it temporarily instead

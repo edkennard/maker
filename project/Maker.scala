@@ -1,0 +1,54 @@
+import sbt._
+import sbt.Keys._
+
+object Maker extends Build {
+
+  val nameFilter: NameFilter = (s: String) => s.endsWith("Maker.scala")
+
+  lazy val maker = Project(
+    id = "maker",
+    base = file("maker"),
+    settings = Defaults.coreDefaultSettings ++ Seq(
+
+      organization := "com.github.cage433",
+      version := "0.15",
+      scalaVersion := "2.11.7",
+      scalacOptions := Seq("-unchecked", "-feature", "-deprecation",
+                           "-Xfatal-warnings", "-language:implicitConversions"),
+
+      scalaSource in Compile := baseDirectory.value / "src",
+      scalaSource in Test := baseDirectory.value / "tests",
+      resourceDirectory in Compile := baseDirectory.value / "resources",
+      resourceDirectory in Test := baseDirectory.value / "test-resources",
+
+      libraryDependencies ++= Seq(
+        "org.scalatest" % "scalatest_2.10" % "2.2.0",
+        "ch.qos.logback" % "logback-classic" % "1.0.6",
+        "org.slf4j" % "jcl-over-slf4j" % "1.6.1",
+        "commons-io" % "commons-io" % "2.1",
+        "com.typesafe.zinc" % "zinc" % "0.3.7",
+        "org.apache.httpcomponents" % "httpclient" % "4.3",
+        "org.apache.ivy" % "ivy" % "2.3.0-rc2",
+        "org.scalaz" % "scalaz-core_2.10" % "7.0.1",
+        "com.google.guava" % "guava" %  "11.0.2",
+        "com.typesafe" % "config" % "1.2.1",
+        "io.spray" % "spray-json_2.10" % "1.3.1",
+        "javax.inject" % "javax.inject" %  "1",
+        "org.apache.commons" % "commons-exec" % "1.3",
+        "org.apache.maven" % "maven-aether-provider" % "3.2.5",
+        "org.eclipse.aether" % "aether-connector-basic" % "1.0.0.v20140518",
+        "org.eclipse.aether" % "aether-impl" % "1.0.0.v20140518",
+        "org.eclipse.aether" % "aether-transport-file" % "1.0.0.v20140518",
+        "org.eclipse.aether" % "aether-transport-http" % "1.0.0.v20140518",
+        "org.eclipse.aether" %"aether-test-util" % "1.0.0.v20140518",
+        "org.mortbay.jetty" % "jetty" % "6.1.26",
+        "com.github.cage433" % "maker-test-reporter_2.10" % "0.15",
+        "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.5"
+      ),
+
+      // Desired exclusion of maker.git/Maker.scala doesn't work currently, have to delete it temporarily instead
+      excludeFilter in unmanagedSources := HiddenFileFilter || nameFilter,
+      sourcesInBase := false
+    )
+  )
+}

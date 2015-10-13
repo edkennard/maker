@@ -253,11 +253,12 @@ def launch_repl():
     if args.application_config_directory:
         classpath_components.extend([args.application_config_directory])
     
-    if args.maker_developer_mode:
-        classpath_components.extend(maker_class_directories())
-        classpath_components.extend(maker_test_class_directories())
-    else:
-        classpath_components.extend(maker_binaries())
+    # if args.maker_developer_mode:
+    #     classpath_components.extend(maker_class_directories())
+    #     classpath_components.extend(maker_test_class_directories())
+    # else:
+
+    classpath_components.extend(maker_binaries())
 
     classpath_components.extend([reference_config_directory()])
 

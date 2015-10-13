@@ -3,7 +3,26 @@ import sbt.Keys._
 
 object Maker extends Build {
 
-  val nameFilter: NameFilter = (s: String) => s.endsWith("Maker.scala")
+  // Override SBT's default root project in order to exclude maker.git/Maker.scala
+  lazy val root = Project(
+    id = "root",
+    base = file("."),
+    settings = Seq(
+      sourcesInBase := false
+    )
+  ).in(file(".")).aggregate(maker)
+
+  // Configuration module needed so that references.conf can be included in the classpath
+  lazy val config = Project(
+    id = "config",
+    base = file("config"),
+    settings = Defaults.coreDefaultSettings ++ Seq(
+      organization := "com.github.cage433",
+      version := "0.15",
+      scalaVersion := "2.10.4",
+      resourceDirectory in Compile := baseDirectory.value
+    )
+  )
 
   lazy val maker = Project(
     id = "maker",
@@ -47,11 +66,7 @@ object Maker extends Build {
         "org.eclipse.aether" %"aether-test-util" % "1.0.0.v20140518",
         "org.mortbay.jetty" % "jetty" % "6.1.26",
         "com.github.cage433" % "maker-test-reporter_2.10" % "0.15"
-      ),
-
-      // Desired exclusion of maker.git/Maker.scala doesn't work currently, have to delete it temporarily instead
-      excludeFilter in unmanagedSources := HiddenFileFilter || nameFilter,
-      sourcesInBase := false
+      )
     )
-  )
+  ).dependsOn(config)
 }

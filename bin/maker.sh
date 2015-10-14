@@ -32,7 +32,7 @@ MAKER_ROOT_DIR="$( cd "$(dirname $( dirname "${BASH_SOURCE[0]}" ))" && pwd )"
 PROJECT_ROOT_DIR=`pwd`
 
 // Temporary hard-wired path to JAR
-MAKER_JAR=~/.maker/maker-binaries/0.15/maker_2.10-0.15.jar
+MAKER_JAR=~/.maker/maker-binaries/0.15/maker_2.10-0.15_sbt.jar
 
 MAKER_HEAP_SPACE=4000m
 MAKER_PERM_GEN_SPACE=1000m
@@ -128,14 +128,14 @@ HERE
 
   # TODO - add version to maker jars
   cat > maker-jar-list << HERE
-com.github.cage433 maker-test-reporter 0.03 
-com.github.cage433 maker 0.03 
+com.github.cage433 maker-test-reporter_2.10 0.15
+com.github.cage433 maker_2.10 0.15
 HERE
   update_resources $MAKER_ROOT_DIR/.maker/maker-libs maker-jar-list 
   update_resources $PROJECT_ROOT_DIR/.maker/maker-libs maker-jar-list 
   rm maker-jar-list
 
-  // TODO: Manually wired {scala_version} below, which code should be setting this dynamically?
+  # TODO: Manually wired {scala_version} below, which code should be setting this dynamically?
   
   cat > dynamic-scala-resource-list <<HERE
 org.scala-lang scala-library 2.10.4 classifier:sources

@@ -1,5 +1,7 @@
 import sbt._
 import sbt.Keys._
+import sbtassembly.AssemblyKeys._
+
 
 object Maker extends Build {
 
@@ -66,7 +68,13 @@ object Maker extends Build {
         "org.eclipse.aether" %"aether-test-util" % "1.0.0.v20140518",
         "org.mortbay.jetty" % "jetty" % "6.1.26",
         "com.github.cage433" % "maker-test-reporter_2.10" % "0.15"
-      )
+      ),
+
+      assemblyExcludedJars in assembly <<= (fullClasspath in assembly) map {
+        cp => cp filter {
+          x => x.data.getName.matches("commons-logging-1.1.3.jar")
+        }
+      }
     )
   ).dependsOn(config)
 }

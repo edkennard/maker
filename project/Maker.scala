@@ -1,6 +1,7 @@
 import sbt._
 import sbt.Keys._
 import sbtassembly.AssemblyKeys._
+import sbtassembly.{Assembly, MergeStrategy, PathList}
 
 
 object Maker extends Build {
@@ -10,6 +11,9 @@ object Maker extends Build {
     id = "root",
     base = file("."),
     settings = Seq(
+      organization := "com.github.cage433",
+      version := "0.15",
+      scalaVersion := "2.10.4",
       sourcesInBase := false
     )
   ).in(file(".")).aggregate(maker)
@@ -49,12 +53,12 @@ object Maker extends Build {
       libraryDependencies ++= Seq(
         "org.scalatest" % "scalatest_2.10" % "2.2.0",
         "ch.qos.logback" % "logback-classic" % "1.0.6",
-        "org.slf4j" % "jcl-over-slf4j" % "1.6.1",
+        "org.slf4j" % "jcl-over-slf4j" % "1.6.2",
         "commons-io" % "commons-io" % "2.1",
         "com.typesafe.zinc" % "zinc" % "0.3.7",
         "org.apache.httpcomponents" % "httpclient" % "4.3",
         "org.apache.ivy" % "ivy" % "2.3.0-rc2",
-        "org.scalaz" % "scalaz-core_2.10" % "7.0.1",
+        "org.scalaz" % "scalaz-core_2.10" % "7.0.7",
         "com.google.guava" % "guava" %  "11.0.2",
         "com.typesafe" % "config" % "1.2.1",
         "io.spray" % "spray-json_2.10" % "1.3.1",
@@ -74,6 +78,26 @@ object Maker extends Build {
         cp => cp filter {
           x => x.data.getName.matches("commons-logging-1.1.3.jar")
         }
+      },
+
+      assemblyMergeStrategy in assembly := {
+        case x if Assembly.isConfigFile(x) =>
+          MergeStrategy.concat
+        case PathList(ps @ _*) if Assembly.isReadme(ps.last) || Assembly.isLicenseFile(ps.last) =>
+          MergeStrategy.rename
+        case PathList("META-INF", xs @ _*) =>
+          xs map {_.toLowerCase} match {
+            case ("manifest.mf" :: Nil) | ("index.list" :: Nil) | ("dependencies" :: Nil) =>
+              MergeStrategy.discard
+            case "sisu" :: xs =>
+              MergeStrategy.discard
+            case "plexus" :: xs =>
+              MergeStrategy.discard
+            case _ => MergeStrategy.deduplicate
+          }
+        case "asm-license.txt" | "overview.html" =>
+          MergeStrategy.discard
+        case _ => MergeStrategy.deduplicate
       }
     )
   ).dependsOn(config)

@@ -237,11 +237,11 @@ def classpath(jars_and_directories):
 
 def maker_class_directories():
     maker_root = os.path.dirname(os.path.realpath(__file__))
-    return [os.path.join(maker_root, module, "target-maker", MAKER_SCALA_VERSION, "classes") for module in ["maker"]]
+    return [os.path.join(maker_root, module, "target/scala-2.10/classes") for module in ["maker"]]
 
 def maker_test_class_directories():
     maker_root = os.path.dirname(os.path.realpath(__file__))
-    return [os.path.join(maker_root, module, "target-maker", MAKER_SCALA_VERSION, "test-classes") for module in ["maker"]]
+    return [os.path.join(maker_root, module, "target/scala-2.10/test-classes") for module in ["maker"]]
 
 
 
@@ -253,12 +253,11 @@ def launch_repl():
     if args.application_config_directory:
         classpath_components.extend([args.application_config_directory])
     
-    # if args.maker_developer_mode:
-    #     classpath_components.extend(maker_class_directories())
-    #     classpath_components.extend(maker_test_class_directories())
-    # else:
-
-    classpath_components.extend(maker_binaries())
+    if args.maker_developer_mode:
+        classpath_components.extend(maker_class_directories())
+        classpath_components.extend(maker_test_class_directories())
+    else:
+        classpath_components.extend(maker_binaries())
 
     classpath_components.extend([reference_config_directory()])
 

@@ -20,6 +20,8 @@ vim-compile-output
 vim-test-compile-output
 lib_managed
 lib_src_managed
+test_lib_managed
+test_lib_src_managed
 .maker.vim/
 maker-session.log
 maker-test-output
@@ -34,3 +36,4 @@ scala-libs
 **/.maker-libs
 */target-maker
 logback-vim.xml
+.DS_Store

@@ -92,7 +92,7 @@ class ProjectTaskDependenciesTests extends FunSuite with Matchers with ModuleTes
   }
 
 
-  test("Module setUp and tearDown can be overriden"){
+  ignore("Module setUp and tearDown can be overriden"){
     withTempDir{
       projectRoot => 
         TestModuleBuilder.createMakerProjectFile(projectRoot)

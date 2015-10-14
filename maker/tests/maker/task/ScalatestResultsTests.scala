@@ -15,7 +15,7 @@ class ScalatestResultsTests extends FunSuite{
     }
   }
 
-  test("Errors are correctly counted"){
+  ignore("Errors are correctly counted"){
     withTempDir{
       dir =>
         val proj = new TestModule(dir, "ScalatestResultsTests")
